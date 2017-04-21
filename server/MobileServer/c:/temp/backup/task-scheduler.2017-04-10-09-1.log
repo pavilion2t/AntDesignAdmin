@@ -1,0 +1,9 @@
+2017-04-10 09:57:09.688 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - ===============请求Begin===============
+2017-04-10 09:57:09.897 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求地址: http://10.18.89.56:8080/login
+2017-04-10 09:57:09.898 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求方式: POST
+2017-04-10 09:57:09.898 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求IP: 10.18.89.56
+2017-04-10 09:57:09.900 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求处理类: com.sunline.service.backmanagement.LoginService.login
+2017-04-10 09:57:09.900 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求参数: [{"userid":"2004","resPasswd":"123456"}, org.apache.catalina.connector.RequestFacade@60bde677]
+2017-04-10 09:57:22.855 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 请求正常返回: {"code":200,"data":{"resPasswd":"29ba86adde868ff6359333764435c2bf","userna":"2004","loginIp":"0","usertp":"0","retCode":"comm_vta_000005","userid":"2004","PMSYES_CURSOR":[{"1":1}],"token":"eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0OTE3ODk0MzcsInVzZXJpZCI6Ik1qQXdOQT09In0.3wWi_r2POqO77UysfnORjesnOSHJT_aQN7Jx4J1ZkPM"}}
+2017-04-10 09:57:22.856 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - 处理时长(ms): 13188
+2017-04-10 09:57:22.856 INFO [http-nio-8080-exec-2][Log4j2Util.java:72] - ===============请求End===============

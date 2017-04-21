@@ -1,0 +1,41 @@
+.ant-table{
+  font-size: 13px;
+  color:rgba(0, 0, 0, 0.8)
+}
+.ant-table-tbody>tr>td, .ant-table-thead>tr>th{
+  text-align: center;
+  padding:10px 8px;
+}
+
+.ant-table-bordered .ant-table-thead > tr > th{
+  color: rgba(0, 0, 0, 1)
+}
+
+.ant-form-item-label label{
+  color:rgba(0, 0, 0, 0.8);
+  font-size: 14px
+}
+
+.ant-table-thead>tr>th{
+   text-align: center !important;
+}
+
+.ant-form-item-control .edui-default,.ant-form-item-control .ant-upload{
+     line-height: 22px !important;
+}
+.ant-input,.ant-select{
+  color:rgba(0, 0, 0, 0.8);
+}
+.ant-select-disabled,.ant-input[disabled]{
+  color: rgba(0, 0, 0, 0.5)
+}
+
+
+.example {
+  text-align: center;
+  background: rgba(0,0,0,1);
+  border-radius: 4px;
+  margin-bottom: 20px;
+  padding: 30px 50px;
+  margin: 20px 0;
+}

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<configuration status="off" monitorInterval="1800">
+	<properties>
+		<property name="LOG_HOME">c://temp</property>
+		<!-- 日志备份目录 -->
+		<property name="BACKUP_HOME">${LOG_HOME}/backup</property>
+		<property name="SERVER_NAME">mobileserver</property>
+	</properties>
+
+	<appenders>
+		<!-- 定义控制台输出 -->
+		<Console name="Console" target="SYSTEM_OUT" follow="true">
+			<PatternLayout pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%c] [%level] [%thread] ->> %msg%n" />
+		</Console>
+		
+		<!-- 程序员调试日志 -->
+		<RollingFile name="DevLog"
+			fileName="${LOG_HOME}/${SERVER_NAME}.log" filePattern="${BACKUP_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}-%i.log">
+			<PatternLayout pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%c] [%level] [%thread] ->> %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="1MB"/>
+			</Policies>
+			<DefaultRolloverStrategy max="20"/>
+		</RollingFile>
+ 
+
+		<RollingFile name="ProductLog"
+			fileName="${LOG_HOME}/${SERVER_NAME}.log" filePattern="${BACKUP_HOME}/${SERVER_NAME}.%d{yyyy-MM-dd-HH}-%i.log">
+			<PatternLayout pattern="[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%c] [%level] [%thread] ->> %msg%n" />
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+				<SizeBasedTriggeringPolicy size="50MB" />
+			</Policies>
+			<!-- 备份文件个数 -->
+			<DefaultRolloverStrategy max="99"/>
+		</RollingFile>
+		
+	</appenders>
+
+	<loggers>
+		<!-- 3rdparty Loggers -->
+		<logger name="org.springframework.core" level="info"></logger>
+		<logger name="org.springframework.beans" level="info"></logger>
+		<logger name="org.springframework.context" level="info"></logger>
+		<logger name="org.springframework.web" level="info"></logger>
+		<logger name="org.springframework.jdbc" level="info"></logger>
+
+		<logger name="org.quartz.impl.jdbcjobstore" level="info"></logger>
+
+		<logger name="org.jboss.netty" level="warn"></logger>
+		<logger name="org.apache.http" level="warn"></logger>
+		<logger name="com.mchange.v2" level="warn"></logger>
+
+		<!-- Root Logger -->
+		<!-- 日志级别  trace<debug<info<warn<error<fatal -->
+		<root level="INFO" includeLocation="true" additivity="false">
+			<appender-ref ref="ProductLog" />
+			<appender-ref ref="Console" />
+		</root>
+	</loggers>
+</configuration>

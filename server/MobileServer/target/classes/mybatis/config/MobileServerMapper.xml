@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MobileServerMapper">
+	<resultMap id="mapResult" type="java.util.Map" />
+	<select id="GET_USER_ID" resultType="java.util.Map" parameterType="java.util.Map">
+		select b.userid as innerid, b.password, a.userna from t_user_info a left join t_user_password b on a.userid = b.userid where a.e_mail = #{userid} or a.mobile =#{userid}
+	</select>
+	<select id="VTAUSER_QUERYUSER" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.COMMON_VTA_QUERYUSER(
+		#{USERID, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{USERNA, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{DEPTNO, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{BRCHNO, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{ROLETP, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{ROLEID, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{PAGENUM, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{PAGESIZE, mode=IN,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{TOTAL, mode=OUT,javaType=java.lang.String, jdbcType=VARCHAR},
+		#{listnm, mode=OUT,javaType=java.sql.ResultSet, jdbcType=CURSOR,resultMap=mapResult},
+		#{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+		}
+	</select>
+	<select id="SAVE_BANK_USER" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG2_MANAGE.SAVE_BANK_USER(
+		#{userna, mode=IN,jdbcType=VARCHAR},
+		#{mobile, mode=IN, jdbcType=VARCHAR},
+		#{e_mail,mode=IN, jdbcType=VARCHAR},
+		#{borndt, mode=IN, jdbcType=VARCHAR},
+		#{gender, mode=IN, jdbcType=VARCHAR},
+		#{cityno, mode=IN,jdbcType=VARCHAR},
+		#{deptno, mode=IN, jdbcType=VARCHAR},
+		#{brchno,mode=IN, jdbcType=VARCHAR},
+		#{usstyle, mode=IN, jdbcType=VARCHAR},
+		#{usrole, mode=IN, jdbcType=VARCHAR},
+		#{pingyna, mode=IN,jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="VTAUSER_UPDATEUSER" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.COMMON_VTA_UPDTEUSER(
+		#{USERID, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{USERNA, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{DEPTNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{BRCHNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{GENDER, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{BORNDT, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+		}
+	</select>
+	<select id="GET_USER_BASIC_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.GET_USER_BASIC_INFO(
+		#{userid, mode=IN,jdbcType=VARCHAR},
+		#{hastg, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{contet, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR,resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<resultMap id="listnmMap" type="java.util.Map">
+		<result property="mainid" column="mainid" javaType="string" />
+		<result property="trandt" column="trandt" javaType="string" />
+		<result property="bankna" column="bankna" javaType="string" />
+		<result property="cityna" column="cityna" javaType="string" />
+		<result property="projna" column="projna" javaType="string" />
+		<result property="rolena" column="rolena" javaType="string" />
+	</resultMap>
+	<select id="getuserpro" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		PKG_USER_LABEL.USER_GET_PROJECT_INFO2(
+		#{userid,mode=IN, jdbcType=VARCHAR},
+		#{pgsize, mode=IN, jdbcType=VARCHAR},
+		#{projnm, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{listnm,mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR,resultMap=listnmMap},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="ADD_USER_PROJ" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG2_MANAGE.ADD_USER_PROJ(
+		#{userid, mode=IN,jdbcType=VARCHAR},
+		#{beginti, mode=IN, jdbcType=VARCHAR},
+		#{endti,mode=IN, jdbcType=VARCHAR},
+		#{bankno, mode=IN, jdbcType=VARCHAR},
+		#{bankna, mode=IN, jdbcType=VARCHAR},
+		#{bankstatus, mode=IN,jdbcType=VARCHAR},
+		#{cityno, mode=IN, jdbcType=VARCHAR},
+		#{projna,mode=IN, jdbcType=VARCHAR},
+		#{roleno, mode=IN, jdbcType=VARCHAR},
+		#{rolena, mode=IN, jdbcType=VARCHAR},
+		#{rolestatus, mode=IN,jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="DEL_USER_PROJ" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG2_MANAGE.DEL_USER_PROJ(
+		#{mainid, mode=IN,jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="getoneuserpro" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		PKG_USER_LABEL.USER_GET_ONE_PROJECT_INFO(
+		#{mainid,mode=IN, jdbcType=VARCHAR},
+		#{mainid, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{beginti, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{endti, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{bankna, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{cityno,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{cityna,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{prvcno,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{projna,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{rolena,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="update_one_project" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call
+		PKG_USER_LABEL.UPDATE_ONE_PROJECT_INFO(
+		#{userid,mode=IN, jdbcType=VARCHAR},
+		#{mainid, mode=IN, jdbcType=VARCHAR},
+		#{beginti, mode=IN, jdbcType=VARCHAR},
+		#{endti, mode=IN,jdbcType=VARCHAR},
+		#{bankna, mode=IN, jdbcType=VARCHAR},
+		#{cityno,mode=IN, jdbcType=VARCHAR},
+		#{projna, mode=IN, jdbcType=VARCHAR},
+		#{rolena, mode=IN, jdbcType=VARCHAR},
+		#{_retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="VTAUSER_DELETEUSER" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.COMMON_VTA_DELUSER(
+		#{USERID, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}
+		) }
+	</select>
+	<resultMap type="java.util.Map" id="projResult">
+		<result property="key" column="brchno" javaType="string" />
+		<result property="value" column="brchna" javaType="string" />
+	</resultMap>
+	<select id="GET_BRANCH_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.GET_BRANCH_INFO(
+		#{BRCHNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{BRCHNA, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{cityno, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR,
+		resultMap=projResult},
+		#{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+		}
+	</select>
+	<select id="MODIFY_BRANCH_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.MODIFY_BRANCH_INFO(
+		#{BRCHNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{BRCHNA, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{CITYNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{TELENM, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{ADDRES, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{OPENTI, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+		#{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+		}
+	</select>
+	<select id="GET_DEVICE_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.GET_DEVICE_INFO(
+		#{devino, mode=IN,jdbcType=VARCHAR},
+		#{devitp, mode=IN, jdbcType=VARCHAR},
+		#{brchno,mode=IN, jdbcType=VARCHAR},
+		#{cityno, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR,
+		resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="GET_BRANCH_AROUND_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.GET_BRANCH_AROUND_INFO(
+		#{brchno,mode=IN, jdbcType=VARCHAR},
+		#{arodtp, mode=IN, jdbcType=VARCHAR},
+		#{arodna, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT,javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{retParas,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="ADD_BRANCH_AROUND_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.ADD_BRANCH_AROUND_INFO(
+		#{brchno,mode=IN, jdbcType=VARCHAR},
+		#{arodtp, mode=IN, jdbcType=VARCHAR},
+		#{arodna, mode=IN, jdbcType=VARCHAR},
+		#{addres, mode=IN,jdbcType=VARCHAR},
+		#{distance, mode=IN, jdbcType=VARCHAR},
+		#{peopnm,mode=IN, jdbcType=VARCHAR},
+		#{llevel, mode=IN, jdbcType=VARCHAR},
+		#{telenm, mode=IN, jdbcType=VARCHAR},
+		#{cityno, mode=IN,jdbcType=VARCHAR},
+		#{provcd, mode=IN, jdbcType=VARCHAR},
+		#{retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{retParas,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="DELETE_BRANCH_AROUND_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.DELETE_BRANCH_AROUND_INFO(
+		#{arodid,mode=IN, jdbcType=VARCHAR},
+		#{retCode, mode=OUT,jdbcType=VARCHAR,javaType=string},
+		#{retParas, mode=OUT,jdbcType=VARCHAR,javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_BRANCH_AROUND_INFO" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.UPDATE_BRANCH_AROUND_INFO(
+		#{arodid,mode=IN, jdbcType=VARCHAR},
+		#{arodtp, mode=IN, jdbcType=VARCHAR},
+		#{arodna, mode=IN, jdbcType=VARCHAR},
+		#{addres, mode=IN,jdbcType=VARCHAR},
+		#{distance, mode=IN, jdbcType=VARCHAR},
+		#{peopnm,mode=IN, jdbcType=VARCHAR},
+		#{llevel, mode=IN, jdbcType=VARCHAR},
+		#{telenm, mode=IN, jdbcType=VARCHAR},
+		#{cityno, mode=IN,jdbcType=VARCHAR},
+		#{provcd, mode=IN, jdbcType=VARCHAR},
+		#{retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{retParas,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_BRANCH_IMAGE" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.GET_BRANCH_IMAGE(
+		#{brchno, mode=IN,jdbcType=VARCHAR},
+		#{images, mode=OUT, jdbcType=VARCHAR},
+		#{_retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_BRANCH_IMAGE" resultType="java.util.Map"
+		statementType="CALLABLE">
+		{call PKG_MANAGE.UPDATE_BRANCH_IMAGE(
+		#{brchno, mode=IN,jdbcType=VARCHAR},
+		#{url, mode=IN, jdbcType=VARCHAR},
+		#{_retCode,mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg,mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="BANK_PC_DEVICE_LIST" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.BANK_PC_DEVICE_LIST(
+		#{devitp, mode=IN, jdbcType=VARCHAR},
+		#{borklv, mode=IN, jdbcType=VARCHAR},
+		#{status, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="BANK_BORK_DETAIL" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.BANK_BORK_DETAIL(
+		#{brokid, mode=IN, jdbcType=VARCHAR},
+		#{userid, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{userna, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{trandt, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{deviid, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{devitp, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{brchna, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{contet, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{images, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{borklv, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{status, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_BORK_CONTET" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.GET_BORK_CONTET(
+		#{brokid, mode=IN, jdbcType=VARCHAR},
+		#{contet, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{perid, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="BANK_BORK_DESIGNATE" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.BANK_BORK_DESIGNATE(
+		#{brokid, mode=IN, jdbcType=VARCHAR},
+		#{userid, mode=IN, jdbcType=VARCHAR},
+		#{perid, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_INVERTIGATE_INFO" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG_MANAGE.GET_INVERTIGATE_INFO(
+		#{papetp, mode=IN, jdbcType=VARCHAR},
+		#{status, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_INVERTIGATE_DETAIL" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG_MANAGE.GET_INVERTIGATE_DETAIL(
+		#{papeid, mode=IN, jdbcType=VARCHAR},
+		#{papena, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{endti, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{scopes, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{tartid, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{totlnm, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{partnm, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{percent, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_INVERTIGATE_PAPER" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG_MANAGE.GET_INVERTIGATE_PAPER(
+		#{papeid, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_INVERTIGATE_PAPER" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG_MANAGE.UPDATE_INVERTIGATE_PAPER(
+		#{quesid, mode=IN, jdbcType=VARCHAR},
+		#{quesna, mode=IN, jdbcType=VARCHAR},
+		#{optioa, mode=IN, jdbcType=VARCHAR},
+		#{optiob, mode=IN, jdbcType=VARCHAR},
+		#{optioc, mode=IN, jdbcType=VARCHAR},
+		#{optiod, mode=IN, jdbcType=VARCHAR},
+		#{answer, mode=IN, jdbcType=VARCHAR},
+		#{questp, mode=IN, jdbcType=VARCHAR},
+		#{retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_CHECK_OPTION_LIST" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.GET_CHECK_OPTION_LIST(
+		#{status, mode=IN, jdbcType=VARCHAR},
+		#{tarttp, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_CHECK_OPTION_ITEM_LIST" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.GET_CHECK_OPTION_ITEM_LIST(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{status, mode=IN, jdbcType=VARCHAR},
+		#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_CHECK_ITEM_STATUS" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.UPDATE_CHECK_ITEM_STATUS(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_CHECK_SECOND_STATUS" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.UPDATE_CHECK_SECOND_STATUS(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{itemtp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_CHECK_OPTION_ALL_STATUS" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.UPDATE_CHECK_OPTION_ALL_STATUS(
+		#{tarttp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="UPDATE_CHECK_OPTION_STATUS" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.UPDATE_CHECK_OPTION_STATUS(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{percet, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_CHECK_OPTION_ADD" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.GET_CHECK_OPTION_ADD(
+		#{chckna, mode=IN, jdbcType=VARCHAR},
+		#{percent, mode=IN, jdbcType=VARCHAR},
+		#{tarttp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="DEL_CHECK_OPTION" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.DEL_CHECK_OPTION(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_CHECK_OPTION_ITEM_ADD" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.GET_CHECK_OPTION_ITEM_ADD(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{itemna, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="DEL_CHECK_SECOND_ITEM" resultType="java.util.Map" statementType="CALLABLE">
+		{call PKG2_MANAGE.DEL_CHECK_SECOND_ITEM(
+		#{chcktp, mode=IN, jdbcType=VARCHAR},
+		#{itemtp, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<resultMap id="artcliMap"  type="java.util.Map">
+		<result property="artcid" column="artcid" javaType="string" />
+		<result property="userna" column="userna" javaType="string" />
+		<result property="userid" column="userid" javaType="string" />
+		<result property="trantp" column="trantp" javaType="string" />
+		<result property="image" column="image" javaType="string" />
+		<result property="title" column="title" javaType="string" />
+		<result property="contet" column="contet" javaType="string" />
+		<result property="tranti" column="tranti"  javaType="string" />
+		<result property="tag" column="tag" javaType="string" />
+		<result property="viewnm" column="viewnm" javaType="string" />
+	</resultMap>
+	<select id="getartli" resultType="java.util.Map" statementType="CALLABLE">
+		{call
+		PKG_ARTICLE_NEWS.GET_ARTTICLELI(
+		#{sessid, mode=IN, jdbcType=VARCHAR,javaType=string},
+		#{artcid, mode=IN, jdbcType=VARCHAR,javaType=string},
+		#{pgsize, mode=IN, jdbcType=INTEGER,javaType=int},
+		#{totrec, mode=OUT, jdbcType=VARCHAR,javaType=string},
+		#{artcid, mode=OUT, jdbcType=VARCHAR,javaType=string},
+		#{hasmore, mode=OUT, jdbcType=VARCHAR,javaType=string},
+		#{artcli, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR,
+		resultMap=artcliMap},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_QUESTION_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_QUESTION_INFO( 
+          #{groupid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{userid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{status, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{order, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_TEAM_ACHIEVEMENTS" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_TEAM_ACHIEVEMENTS( 
+          #{brchno, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{trandt, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{avagprofess, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{avagmanage, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{avagcorporate, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{avagstudy, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_TEAM_TRAIN_STAUS" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_TEAM_TRAIN_STATUS( 
+          #{PROJNO, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{TOTALNUM, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{PARTNUM, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{PARTPERCENT, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{AHEAHPERCENT, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{AVAGSCORE, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{MAXSCORE, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{MINSCORE, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{PASSPERCENT, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_PERSON_TRAIN_STAUS" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_PERSON_TRAIN_STATUS( 
+          #{USERID, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_ACTIVE_USER_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_ACTIVE_USER_INFO( 
+          #{type, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{querytype, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{startdate, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{enddate, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{last7user, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{last30user, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{last7compare, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{last30compare, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <resultMap type="java.util.Map" id="deptResult">
+		<result property="key" 	column="deptno"  	javaType="string"/>
+		<result property="value" 	column="deptna" 	javaType="string"/>
+	</resultMap>
+ 	<select id="GET_DEPT_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_DEPT_INFO( 
+          #{DEPTID, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{DEPTNA, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=deptResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <resultMap type="java.util.Map" id="roleResult">
+		<result property="key" 	column="roleid"  	javaType="string"/>
+		<result property="value" 	column="rolena" 	javaType="string"/>
+	</resultMap>
+ 	<select id="GET_ROLE_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_ROLE_INFO( 
+          #{ROLEID, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{ROLENA, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=roleResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_GROUP_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_GROUP_INFO( 
+          #{grupid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="GET_PORDER" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_PORDER( 
+          #{grupid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="COMMON_VTA_USERLOGIN" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.COMMON_VTA_USERLOGIN(
+          #{userid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{resPasswd, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{loginIp, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{userna, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{usertp, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{PMSYES_CURSOR, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}) 
+        }
+    </select>
+    <resultMap type="java.util.Map" id="cityResult">
+		<result property="key" 	column="CITYCD"  	javaType="string"/>
+		<result property="value" 	column="CITYNA" 	javaType="string"/>
+	</resultMap>
+     <select id="GET_CITY_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_CITY( 
+          #{PRVCCD, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=cityResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <resultMap type="java.util.Map" id="provResult">
+		<result property="key" 	column="PRVCCD"  	javaType="string"/>
+		<result property="value" 	column="PRVCNA" 	javaType="string"/>
+	</resultMap>
+     <select id="GET_PROVINCE_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_PROVINCE( 
+          #{PRVCCD, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=provResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="USER_QUESTION_IMPORT" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_QUESTION_ANSWER.USER_QUESTION_IMPORT( 
+          #{type, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{question, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{options, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{answer, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{userid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="QUERY_USER_IMPORT_DATA" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_QUESTION_ANSWER.QUERY_USER_IMPORT_DATA( 
+          #{userid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{userno, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{scores, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="user_sendmsg" parameterType="java.util.Map" resultType="java.util.Map" statementType="CALLABLE">
+	 	{call PKG_USER_MESSAGE.MESSAGE_SEND_ALL(
+			#{sessid, mode=IN, jdbcType=VARCHAR},
+			#{sendtp, mode=IN, jdbcType=VARCHAR},
+			#{tartid, mode=IN, jdbcType=VARCHAR},
+			#{savetg, mode=IN, jdbcType=VARCHAR},
+			#{title, mode=IN, jdbcType=VARCHAR},
+			#{mesgtp, mode=IN, jdbcType=VARCHAR},
+			#{extra, mode=IN, jdbcType=VARCHAR},
+			#{remark, mode=IN, jdbcType=VARCHAR},
+			#{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+			#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+			#{_retMsg, mode=OUT,jdbcType=VARCHAR,  javaType=string}
+		) }     
+	 </select>
+	 <select id="article_add" resultType="map" statementType="CALLABLE">
+		{call
+		PKG_MANAGE.ARTICLE_NEWS_ADD(
+		#{title, mode=IN, jdbcType=VARCHAR},
+		#{image, mode=IN, jdbcType=VARCHAR},
+		#{tag, mode=IN, jdbcType=VARCHAR},
+		#{contet, mode=IN, jdbcType=VARCHAR},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="article_delete" resultType="map" statementType="CALLABLE">
+		{call
+		PKG_MANAGE.ARTICLE_DELETE(
+		#{artcid, mode=IN, jdbcType=VARCHAR},
+		#{contet, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retCode, mode=OUT,jdbcType=VARCHAR, javaType=string},
+		#{_retMsg, mode=OUT,jdbcType=VARCHAR, javaType=string}
+		) }
+	</select>
+	<select id="GET_PARENT_BRANCH" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.GET_PARENT_BRANCH( 
+          #{userid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{listnm, mode=OUT, javaType=java.sql.ResultSet, jdbcType=CURSOR, resultMap=mapResult},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="USE_QUESTION_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.USE_QUESTION_INFO( 
+          #{trantype, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{tartids, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{newtag, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+    <select id="MODIFY_QUESTION_INFO" resultType="java.util.Map" statementType="CALLABLE">
+        {call PKG_MANAGE.MODIFY_QUESTION_INFO( 
+          #{mastid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{groupid, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{content, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{options, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{answer, mode=IN, javaType=java.lang.String, jdbcType=VARCHAR},
+          #{retCode, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR}, 
+          #{retParas, mode=OUT, javaType=java.lang.String, jdbcType=VARCHAR})
+        }
+    </select>
+</mapper>
