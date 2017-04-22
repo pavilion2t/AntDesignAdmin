@@ -19,29 +19,30 @@ export default class LoginPage extends Component {
 	}
 	login(){
 
-		let tranCode = "login";
-		let input={
-     		"userid":this.state.userid,
-		 	"resPasswd":md5(this.state.password)
-    	}
-		let self = this;
-		console.log(input)
-		this.setState({loading:true})
-		window.currentIp = HTTP.getIp();
-		HTTP.commHttp(tranCode,input,function(data){
-			console.log(data)
-			sessionStorage.setItem("token",data.token)
+		//let tranCode = "login";
+		//let input={
+     		//"userid":this.state.userid,
+		 //	"resPasswd":md5(this.state.password)
+    	//}
+	//	let self = this;
+	//	console.log(input)
+	//	this.setState({loading:true})
+	//	window.currentIp = HTTP.getIp();
+	//	HTTP.commHttp(tranCode,input,function(data){
+	//		console.log(data)
+	//		sessionStorage.setItem("token",data.token)
 			
-      	self.setState({loading:false})
-		 	browserHistory.push({ pathname: '/home', state:{ name:data.userna } });
-		},function(e){
-			self.setState({loading:false})
-       		Modal.error({
-				title: '登录失败',
-				content:e,
-				onOk:()=>{self.setState({loading:false})}
-			});
-		});
+      	//self.setState({loading:false})
+	//	 	browserHistory.push({ pathname: '/home', state:{ name:data.userna } });
+		browserHistory.push({ pathname: '/home',state:{name:"1001"} });
+	//	},function(e){
+	//		self.setState({loading:false})
+       	//	Modal.error({
+	//			title: '登录失败',
+	//			content:e,
+	//			onOk:()=>{self.setState({loading:false})}
+	//		});
+	//	});
 	}
 	componentDidMount () {
 		sessionStorage.clear();
